@@ -116,8 +116,14 @@ export default function Dashboard() {
             </Link>
           </li>
           {[
-            { href: 'https://dev.to/rgolawski', label: 'About' },
-            { href: 'https://github.com/rago4/dev-analytics', label: 'GitHub' },
+            {
+              href: 'https://dev.to/rgolawski/what-ive-learned-by-building-dev-analytics-dashboard-4foa',
+              label: 'About',
+            },
+            {
+              href: 'https://github.com/rago4/dev-analytics',
+              label: 'GitHub',
+            },
           ].map((item) => (
             <li key={item.href}>
               <a
