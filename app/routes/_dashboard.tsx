@@ -1,6 +1,12 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
-import { Link, Outlet, useLoaderData, useNavigation } from '@remix-run/react'
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useNavigation,
+  useRouteError,
+} from '@remix-run/react'
 
 import { AnalyticsDashboard } from '~/components/analytics-dashboard'
 import { ArticlesList } from '~/components/articles-list'
@@ -134,5 +140,20 @@ export default function Dashboard() {
       </footer>
       <Outlet />
     </>
+  )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  console.error(error)
+
+  return (
+    <main className="container mx-auto px-5 py-8 md:py-16">
+      <h2 className="text-xl font-bold text-slate-800">Application Error</h2>
+      <p className="mt-3 rounded-md bg-red-100 px-5 py-4 font-mono text-sm leading-relaxed text-red-600">
+        {error instanceof Error ? error.message : 'Something went wrong.'}
+      </p>
+    </main>
   )
 }
