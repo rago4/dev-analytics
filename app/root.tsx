@@ -1,5 +1,5 @@
-import InterHref from '@fontsource/inter/latin.css'
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import InterHref from '@fontsource/inter/latin-ext.css'
+import type { LinksFunction } from '@remix-run/node'
 import {
   Links,
   LiveReload,
@@ -14,13 +14,6 @@ import TailwindHref from './tailwind.css'
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: InterHref },
   { rel: 'stylesheet', href: TailwindHref },
-]
-
-export const meta: MetaFunction = () => [
-  {
-    charset: 'utf-8',
-    viewport: 'width=device-width,initial-scale=1',
-  },
 ]
 
 export default function App() {

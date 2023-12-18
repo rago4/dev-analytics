@@ -52,7 +52,9 @@ function fetcher<T>(endpoint: string, token: string) {
     },
   }).then((response) => {
     if (response.status === 401) {
-      throw new Error('Unauthorized. Please make sure your API key is valid.')
+      throw new Error(
+        'Unauthorized. Remove "user-prefs" cookie and try again with a valid API key.'
+      )
     }
     if (response.status === 429) {
       throw new Error('Too many requests. Please try again later.')

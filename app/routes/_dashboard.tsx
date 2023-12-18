@@ -13,6 +13,8 @@ import { fallback, periodStart, prepareQP } from '~/lib/utils'
 
 export const meta: MetaFunction = () => {
   return [
+    { charSet: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width,initial-scale=1' },
     { title: 'DEV Analytics' },
     {
       name: 'description',
