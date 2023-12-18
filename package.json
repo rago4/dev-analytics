@@ -7,16 +7,21 @@
     "build": "remix build",
     "dev": "remix dev",
     "start": "netlify serve",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "lint": "eslint ./app"
   },
   "dependencies": {
+    "@epic-web/cachified": "^4.0.0",
+    "@fontsource/inter": "^5.0.16",
     "@netlify/functions": "^2.0.0",
     "@netlify/remix-adapter": "^2.0.0",
     "@remix-run/node": "^2.4.0",
     "@remix-run/react": "^2.4.0",
     "cross-env": "^7.0.3",
+    "lru-cache": "^10.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.3"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.4.0",
@@ -25,6 +30,11 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "eslint": "^8.27.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "tailwindcss": "^3.3.6",
     "typescript": "^5.2.2"
   },
   "engines": {
