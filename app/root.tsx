@@ -1,4 +1,4 @@
-import InterHref from '@fontsource/inter/latin-ext.css'
+import InterHref from '@fontsource/inter/latin.css'
 import type { LinksFunction } from '@remix-run/node'
 import {
   Links,
@@ -23,7 +23,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-inter antialiased">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
