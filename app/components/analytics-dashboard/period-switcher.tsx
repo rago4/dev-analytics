@@ -9,7 +9,7 @@ export function PeriodSwitcher({
 }) {
   return (
     <ul className="mt-4 flex space-x-1.5">
-      {['week', 'month', 'year'].map((period) => {
+      {['week', 'month', 'year', 'total'].map((period) => {
         return (
           <li key={period}>
             <Link

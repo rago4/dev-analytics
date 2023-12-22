@@ -47,12 +47,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
   )
   const periodQP = fallback(
     prepareQP(url.searchParams.get('period')),
-    ['wekk', 'month', 'year'],
+    ['wekk', 'month', 'year', 'total'],
     'week'
   )
+  const currentArticle = articles.find(({ id }) => String(id) === articleQP)
 
   if (cookie.apiKey && articleQP && periodQP) {
-    const start = periodStart(periodQP)
+    const start =
+      periodQP === 'total'
+        ? currentArticle?.published_at.substring(0, 10) || ''
+        : periodStart(periodQP)
     historical = await getHistorical({
       token: cookie.apiKey,
       article_id: articleQP,
@@ -65,16 +69,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
     })
   }
 
-  return json({ articles, articleQP, historical, periodQP, referrers })
+  return json({
+    articles,
+    articleQP,
+    currentArticle,
+    historical,
+    periodQP,
+    referrers,
+  })
 }
 
 export default function Dashboard() {
   const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
-  const article = loaderData.articles.find(
-    ({ id }) => loaderData.articleQP === String(id)
-  )
   const search = new URLSearchParams({
     article: loaderData.articleQP,
     period: loaderData.periodQP,
@@ -96,9 +104,9 @@ export default function Dashboard() {
         <main className="col-span-12 h-full overflow-y-auto p-5 md:col-span-9">
           {navigation.state === 'loading' ? (
             <LoadingSkeleton />
-          ) : article ? (
+          ) : loaderData.currentArticle ? (
             <AnalyticsDashboard
-              article={article}
+              article={loaderData.currentArticle}
               historical={loaderData.historical}
               periodQP={loaderData.periodQP}
               referrers={loaderData.referrers}
