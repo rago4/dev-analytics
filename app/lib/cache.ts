@@ -7,8 +7,10 @@ export type Article = {
   id: number
   title: string
   published_at: string
-  slug: string
-  user: { username: string }
+  url: string
+  comments_count: number
+  public_reactions_count: number
+  page_views_count: number
 }
 
 export type Historical = {

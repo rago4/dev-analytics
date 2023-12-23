@@ -57,16 +57,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
       periodQP === 'total'
         ? currentArticle?.published_at.substring(0, 10) || ''
         : periodStart(periodQP)
-    historical = await getHistorical({
-      token: cookie.apiKey,
-      article_id: articleQP,
-      start,
-    })
-    referrers = await getReferrers({
-      token: cookie.apiKey,
-      article_id: articleQP,
-      start,
-    })
+    const responses = await Promise.all([
+      getHistorical({
+        token: cookie.apiKey,
+        article_id: articleQP,
+        start,
+      }),
+      getReferrers({
+        token: cookie.apiKey,
+        article_id: articleQP,
+        start,
+      }),
+    ])
+    historical = responses[0]
+    referrers = responses[1]
   }
 
   return json({

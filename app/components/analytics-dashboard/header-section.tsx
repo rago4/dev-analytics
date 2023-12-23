@@ -13,7 +13,7 @@ export function HeaderSection({ article }: { article: Article }) {
         </p>
       </div>
       <a
-        href={`https://dev.to/${article.user.username}/${article.slug}`}
+        href={article.url}
         target="_blank"
         rel="noreferrer"
         className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium shadow transition-colors hover:bg-slate-100"

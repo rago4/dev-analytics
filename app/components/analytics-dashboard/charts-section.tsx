@@ -108,7 +108,7 @@ function CustomLineChart({
   }
 
   return (
-    <ResponsiveContainer width="100%" height={320}>
+    <ResponsiveContainer width="100%" height={360}>
       <LineChart data={data}>
         <CartesianGrid vertical={false} stroke={colors.slate300} />
         <XAxis
