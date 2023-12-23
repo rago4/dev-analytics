@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
-import type { TooltipProps } from 'recharts'
+import type { LegendProps, TooltipProps } from 'recharts'
 import {
   CartesianGrid,
+  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -65,6 +66,30 @@ function CustomTooltip({
   )
 }
 
+function CustomLegend({ payload, onClick }: LegendProps) {
+  if (!payload?.length) return null
+
+  return (
+    <div className="mt-3 flex">
+      {payload.map((item, index) => (
+        <button
+          key={item.value}
+          onClick={onClick ? (event) => onClick(item, index, event) : undefined}
+          className={`flex items-center space-x-1.5 rounded-md px-2 py-0.5 text-sm text-slate-500 transition hover:bg-slate-50 hover:text-slate-600 ${
+            item.inactive ? 'opacity-50' : 'opacity-100'
+          }`}
+        >
+          <span
+            className="block h-2 w-2 rounded-full"
+            style={{ backgroundColor: item.color }}
+          />
+          <span>{item.value}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function CustomLineChart({
   data,
   lines,
@@ -72,6 +97,16 @@ function CustomLineChart({
   data: { date: string }[]
   lines: { key: string; color: string }[]
 }) {
+  const [hiddenLines, setHiddenLines] = useState<string[]>([])
+
+  const toggleLine = (key: string) => {
+    if (hiddenLines.includes(key)) {
+      setHiddenLines(hiddenLines.filter((line) => line !== key))
+    } else {
+      setHiddenLines([...hiddenLines, key])
+    }
+  }
+
   return (
     <ResponsiveContainer width="100%" height={320}>
       <LineChart data={data}>
@@ -91,11 +126,16 @@ function CustomLineChart({
           tickFormatter={(value) => formatNumber(value)}
         />
         <Tooltip content={<CustomTooltip />} />
+        <Legend
+          content={<CustomLegend />}
+          onClick={(item) => toggleLine(item.value)}
+        />
         {lines.map((line) => (
           <Line
             key={line.key}
             type="monotone"
             dataKey={line.key}
+            hide={hiddenLines.includes(line.key)}
             stroke={line.color}
             strokeWidth={2}
             dot={false}
