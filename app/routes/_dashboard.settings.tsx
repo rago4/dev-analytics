@@ -65,7 +65,7 @@ export default function DashboardSettings() {
   return (
     <dialog
       open
-      className="fixed left-0 top-0 grid h-full w-full place-items-center bg-white/50 backdrop-blur-lg"
+      className="fixed left-0 top-0 grid h-full w-full place-items-center bg-white/50 p-5 backdrop-blur-lg"
     >
       <div
         ref={ref}
