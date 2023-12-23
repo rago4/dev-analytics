@@ -9,6 +9,7 @@ import { LoadingSkeleton } from '~/components/loading-skeleton'
 import { userPrefs } from '~/cookies.server'
 import type { Article, Historical, Referrers } from '~/lib/cache'
 import { getArticles, getHistorical, getReferrers } from '~/lib/cache'
+import { useFilters } from '~/lib/hooks'
 import { fallback, periodStart, prepareQP } from '~/lib/utils'
 
 export const meta: MetaFunction = () => {
@@ -45,9 +46,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     articles.map(({ id }) => String(id)),
     ''
   )
+  const chartTabQP = fallback(
+    prepareQP(url.searchParams.get('chart_tab')),
+    ['readers', 'reactions', 'comments'],
+    'readers'
+  )
   const periodQP = fallback(
     prepareQP(url.searchParams.get('period')),
-    ['wekk', 'month', 'year', 'total'],
+    ['week', 'month', 'year', 'total'],
     'week'
   )
   const currentArticle = articles.find(({ id }) => String(id) === articleQP)
@@ -76,6 +82,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({
     articles,
     articleQP,
+    chartTabQP,
     currentArticle,
     historical,
     periodQP,
@@ -86,11 +93,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Dashboard() {
   const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
-
-  const search = new URLSearchParams({
-    article: loaderData.articleQP,
-    period: loaderData.periodQP,
-  }).toString()
+  const { search } = useFilters()
 
   return (
     <>
@@ -99,11 +102,7 @@ export default function Dashboard() {
           <h2 className="hidden text-xl font-bold text-slate-800 md:block">
             Articles
           </h2>
-          <ArticlesList
-            articles={loaderData.articles}
-            articleQP={loaderData.articleQP}
-            periodQP={loaderData.periodQP}
-          />
+          <ArticlesList articles={loaderData.articles} />
         </aside>
         <main className="col-span-12 h-full overflow-y-auto p-5 md:col-span-9">
           {navigation.state === 'loading' ? (
@@ -112,7 +111,6 @@ export default function Dashboard() {
             <AnalyticsDashboard
               article={loaderData.currentArticle}
               historical={loaderData.historical}
-              periodQP={loaderData.periodQP}
               referrers={loaderData.referrers}
             />
           ) : (
@@ -123,7 +121,7 @@ export default function Dashboard() {
       <footer className="border-t border-slate-200 px-5 py-4">
         <ul className="flex justify-end space-x-3 text-sm text-slate-800">
           <li>
-            <Link to={`/settings?${search}`} className="hover:underline">
+            <Link to={`/settings?${search({})}`} className="hover:underline">
               Settings
             </Link>
           </li>

@@ -8,7 +8,7 @@ export function LoadingSkeleton() {
         </div>
         <div className="h-10 w-16 rounded-md bg-slate-200" />
       </div>
-      <div className="mt-4 h-8 w-48 rounded bg-slate-200" />
+      <div className="mt-4 h-8 w-64 rounded bg-slate-200" />
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <div className="h-28 rounded-md bg-slate-200" />
         <div className="h-28 rounded-md bg-slate-200" />

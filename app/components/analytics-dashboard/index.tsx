@@ -9,18 +9,16 @@ import { TrafficSection } from './traffic-section'
 export function AnalyticsDashboard({
   article,
   historical,
-  periodQP,
   referrers,
 }: {
   article: Article
   historical: Historical
-  periodQP: string
   referrers: Referrers
 }) {
   return (
     <>
       <HeaderSection article={article} />
-      <PeriodSwitcher articleId={article.id} periodQP={periodQP} />
+      <PeriodSwitcher />
       <SummarySection historical={historical} />
       <ChartsSection historical={historical} />
       <TrafficSection referrers={referrers} />

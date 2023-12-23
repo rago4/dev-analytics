@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react'
 import { useMemo, useState } from 'react'
 import type { LegendProps, TooltipProps } from 'recharts'
 import {
@@ -16,9 +17,10 @@ import type {
 } from 'recharts/types/component/DefaultTooltipContent'
 
 import type { Historical } from '~/lib/cache'
+import { useFilters } from '~/lib/hooks'
 import { formatDate, formatNumber } from '~/lib/utils'
 
-const tabs = ['Readers', 'Reactions', 'Comments']
+const tabs = ['readers', 'reactions', 'comments']
 
 const colors = {
   amber: '#f59e0b',
@@ -148,10 +150,10 @@ function CustomLineChart({
 }
 
 export function ChartsSection({ historical }: { historical: Historical }) {
-  const [tab, setTab] = useState(tabs[0])
+  const { params, search } = useFilters()
 
   const data = useMemo(() => {
-    if (tab === tabs[0]) {
+    if (params.chartTabQP === tabs[0]) {
       return Object.keys(historical).map((date) => ({
         date,
         Total: historical[date].page_views.total,
@@ -163,7 +165,7 @@ export function ChartsSection({ historical }: { historical: Historical }) {
         ),
       }))
     }
-    if (tab === tabs[1]) {
+    if (params.chartTabQP === tabs[1]) {
       return Object.keys(historical).map((date) => ({
         date,
         Total: historical[date].reactions.total,
@@ -172,24 +174,24 @@ export function ChartsSection({ historical }: { historical: Historical }) {
         Bookmarks: historical[date].reactions.readinglist,
       }))
     }
-    if (tab === tabs[2]) {
+    if (params.chartTabQP === tabs[2]) {
       return Object.keys(historical).map((date) => ({
         date,
         Comments: historical[date].comments.total,
       }))
     }
     return []
-  }, [historical, tab])
+  }, [historical, params.chartTabQP])
 
   const lines = useMemo(() => {
-    if (tab === tabs[0]) {
+    if (params.chartTabQP === tabs[0]) {
       return [
         { key: 'Total', color: colors.violet },
         { key: 'Avg. read time (min)', color: colors.amber },
         { key: 'Total read time (min)', color: colors.rose },
       ]
     }
-    if (tab === tabs[1]) {
+    if (params.chartTabQP === tabs[1]) {
       return [
         { key: 'Total', color: colors.teal },
         { key: 'Likes', color: colors.rose },
@@ -197,27 +199,27 @@ export function ChartsSection({ historical }: { historical: Historical }) {
         { key: 'Bookmarks', color: colors.sky },
       ]
     }
-    if (tab === tabs[2]) {
+    if (params.chartTabQP === tabs[2]) {
       return [{ key: 'Comments', color: colors.teal }]
     }
     return []
-  }, [tab])
+  }, [params.chartTabQP])
 
   return (
     <section className="mt-3.5 rounded-md border border-slate-200 p-4 shadow">
       <ul className="mb-6 flex w-min rounded-md bg-slate-100 p-1 text-sm font-medium">
-        {tabs.map((label) => (
-          <li key={label}>
-            <button
-              className={`w-24 rounded-md p-1.5 transition-colors ${
-                tab === label
+        {tabs.map((tab) => (
+          <li key={tab}>
+            <Link
+              to={`/?${search({ chart_tab: tab })}`}
+              className={`block w-24 rounded-md p-1.5 text-center capitalize transition-colors ${
+                params.chartTabQP === tab
                   ? 'bg-white text-slate-700 shadow-sm'
                   : 'text-slate-500 hover:text-slate-600'
               }`}
-              onClick={() => setTab(label)}
             >
-              {label}
-            </button>
+              {tab}
+            </Link>
           </li>
         ))}
       </ul>
