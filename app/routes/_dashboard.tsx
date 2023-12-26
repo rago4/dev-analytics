@@ -97,7 +97,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-12 md:h-[calc(100svh-53px)]">
+      <div className="grid grid-cols-12 md:h-[calc(100dvh-53px)]">
         <aside className="col-span-12 overflow-auto border-b border-r-0 border-slate-200 p-5 md:col-span-3 md:h-full md:border-b-0 md:border-r">
           <h2 className="hidden text-xl font-bold text-slate-800 md:block">
             Articles
