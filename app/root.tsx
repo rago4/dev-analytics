@@ -23,7 +23,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="font-inter antialiased">
+      <body className="font-inter text-slate-800 antialiased">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
